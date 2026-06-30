@@ -130,7 +130,8 @@ footer{background:#060e18;border-top:1px solid rgba(201,168,76,.12);padding:4rem
 /* ═══ HERO ═══ */
 .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 5% 100px;overflow:hidden;}
 .hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
-.hero-video-bg video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;object-fit:cover;}
+.hero-video-bg .hero-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 24s ease-in-out infinite alternate;}
+@keyframes kenburns{0%{transform:scale(1) translate(0,0);}100%{transform:scale(1.12) translate(-1%,-1%);}}
 .hero-video-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(11,25,41,0.78),rgba(11,25,41,0.60) 50%,rgba(11,25,41,0.82));}
 .hero-grid-overlay{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(201,168,76,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.035) 1px,transparent 1px);background-size:55px 55px;pointer-events:none;}
 .hero-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:1;filter:blur(80px);}
@@ -338,10 +339,7 @@ footer{background:#060e18;border-top:1px solid rgba(201,168,76,.12);padding:4rem
 <!-- HERO -->
 <section class="hero">
   <div class="hero-video-bg">
-    <video autoplay muted loop playsinline>
-      <source src="https://videos.pexels.com/video-files/3191668/3191668-uhd_2560_1440_25fps.mp4" type="video/mp4">
-      <source src="https://videos.pexels.com/video-files/5215990/5215990-hd_1920_1080_25fps.mp4" type="video/mp4">
-    </video>
+    <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1920&q=85" alt="Medical consultation" class="hero-bg-img">
   </div>
   <div class="hero-grid-overlay"></div>
   <div class="hero-orb hero-orb-1"></div>
@@ -644,10 +642,11 @@ function showResult() {
   } else { cards=[programs.md4,programs.premed]; }
   var c=document.getElementById('resCards'); c.innerHTML='';
   if (!cards.length) {
-    c.innerHTML='<div class="prog-result"><p style="color:rgba(255,255,255,.7);line-height:1.7;">Please reach out — our advisors will explore every available option with you personally.</p><button class="btn-interested" type="button" onclick="submitInterest('General Inquiry')">Contact an Advisor →</button></div>';
+    c.innerHTML = '<div class="prog-result"><p style="color:rgba(255,255,255,.7);line-height:1.7;">Please reach out — our advisors will explore every available option with you personally.</p><button class="btn-interested" type="button" onclick="submitInterest(&quot;General Inquiry&quot;)">Contact an Advisor →</button></div>';
   } else {
     cards.forEach(function(p) {
-      c.innerHTML+='<div class="prog-result"><div class="pr-badge">'+p.badge+'</div><h3>'+p.name+'</h3><p>'+p.desc+'</p><button class="btn-interested" type="button" onclick="submitInterest(''+p.name.replace(/'/g,"\'")+'')">I'm Interested — Contact Me →</button></div>';
+      var safeName = p.name.replace(/'/g, "&#39;");
+      c.innerHTML += '<div class="prog-result"><div class="pr-badge">' + p.badge + '</div><h3>' + p.name + '</h3><p>' + p.desc + '</p><button class="btn-interested" type="button" onclick="submitInterest(&quot;' + safeName + '&quot;)">I&#39;m Interested — Contact Me →</button></div>';
     });
   }
   document.getElementById('progFill').style.width='100%';
@@ -656,18 +655,29 @@ function showResult() {
   showStep('sResult',4);
 }
 function submitInterest(prog) {
-  var body = encodeURIComponent('New Program Inquiry — Study Medical
+  var data = new URLSearchParams();
+  data.append('form-name', 'program-interest');
+  data.append('first-name', S.fn);
+  data.append('last-name', S.ln);
+  data.append('dob', S.dob);
+  data.append('nationality', S.nat);
+  data.append('residence', S.res);
+  data.append('email', S.em);
+  data.append('phone', S.cc + ' ' + S.ph);
+  data.append('education-level', S.edu);
+  data.append('program', prog);
 
-Name: '+S.fn+' '+S.ln+'
-DOB: '+S.dob+'
-Nationality: '+S.nat+'
-Residence: '+S.res+'
-Email: '+S.em+'
-Phone: '+S.cc+' '+S.ph+'
-Education: '+S.edu+'
-Program: '+prog);
-  window.location.href = 'mailto:info@studymedical.ca?subject=Program Inquiry — '+encodeURIComponent(prog)+'&body='+body;
-  showSuccess();
+  fetch('/', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: data.toString()
+  })
+  .then(function(){ showSuccess(); })
+  .catch(function(){
+    var body = encodeURIComponent('New Program Inquiry — Study Medical\n\nName: ' + S.fn + ' ' + S.ln + '\nDOB: ' + S.dob + '\nNationality: ' + S.nat + '\nResidence: ' + S.res + '\nEmail: ' + S.em + '\nPhone: ' + S.cc + ' ' + S.ph + '\nEducation: ' + S.edu + '\nProgram: ' + prog);
+    window.location.href = 'mailto:info@studymedical.ca?subject=Program Inquiry — ' + encodeURIComponent(prog) + '&body=' + body;
+    showSuccess();
+  });
 }
 function showSuccess() {
   document.querySelectorAll('.q-step').forEach(function(s){s.style.display='none';});
@@ -684,5 +694,19 @@ function resetQ() {
   showStep('s1',1);
 }
 </script>
+<!-- Hidden form so Netlify's build bot detects and registers this form (submitted dynamically via JS above) -->
+<form name="program-interest" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="first-name">
+  <input type="text" name="last-name">
+  <input type="text" name="dob">
+  <input type="text" name="nationality">
+  <input type="text" name="residence">
+  <input type="email" name="email">
+  <input type="text" name="phone">
+  <input type="text" name="education-level">
+  <input type="text" name="program">
+  <input name="bot-field">
+</form>
+
 </body>
 </html>

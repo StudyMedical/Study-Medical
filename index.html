@@ -475,6 +475,32 @@ footer{background:#060e18;border-top:1px solid rgba(201,168,76,.12);padding:3.5r
   .hero-btns .btn-gold,.hero-btns .btn-ghost{width:100%;max-width:280px;justify-content:center;}
   .programs-grid{grid-template-columns:1fr;}
 }
+
+/* ── FLASHING NO NEET/MCAT BADGE ── */
+@keyframes flashColors{
+  0%{background:#C9A84C;color:#0B1929;box-shadow:0 0 18px rgba(201,168,76,.7);}
+  25%{background:#22c55e;color:#fff;box-shadow:0 0 18px rgba(34,197,94,.7);}
+  50%{background:#ef4444;color:#fff;box-shadow:0 0 18px rgba(239,68,68,.7);}
+  75%{background:#3b82f6;color:#fff;box-shadow:0 0 18px rgba(59,130,246,.7);}
+  100%{background:#C9A84C;color:#0B1929;box-shadow:0 0 18px rgba(201,168,76,.7);}
+}
+@keyframes flashPulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.04);}
+}
+.no-mcat-banner{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.7rem 1.5rem;border-radius:50px;
+  font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  cursor:default;border:none;
+  animation:flashColors 2.8s ease-in-out infinite, flashPulse 1.4s ease-in-out infinite;
+  margin-bottom:1.4rem;white-space:nowrap;
+}
+.no-mcat-banner .nmb-icon{font-size:1rem;}
+.no-mcat-banner .nmb-divider{opacity:.5;font-weight:300;}
+@media(max-width:480px){
+  .no-mcat-banner{font-size:.72rem;padding:.6rem 1.1rem;}
+}
 </style>
 </head>
 <body>
@@ -518,6 +544,15 @@ footer{background:#060e18;border-top:1px solid rgba(201,168,76,.12);padding:3.5r
     <div class="hero-badge"><div class="badge-dot"></div>Guiding Future Physicians</div>
     <h1 class="hero-h1">Your Dream of Becoming<br>a Doctor Doesn't <em>End Here.</em></h1>
     <p class="hero-sub">Personalized medical school pathways for aspiring physicians from every background — regardless of MCAT score, prior rejections, or where you're starting from.</p>
+    <div style="display:flex;justify-content:center;margin-bottom:.2rem;">
+      <div class="no-mcat-banner">
+        <span class="nmb-icon">🚫</span>
+        No NEET UG Required
+        <span class="nmb-divider">|</span>
+        No MCAT Required
+        <span class="nmb-icon">✅</span>
+      </div>
+    </div>
     <div class="hero-btns">
       <button class="btn-gold" onclick="openQ()">Find My Program ↗</button>
       <a class="btn-ghost" href="#programs">Explore Programs</a>
@@ -547,7 +582,7 @@ footer{background:#060e18;border-top:1px solid rgba(201,168,76,.12);padding:3.5r
   <div class="trust-inner">
     <div class="trust-item"><div class="t-check">✓</div><span class="trust-label">Personalized Guidance</span></div>
     <div class="trust-item"><div class="t-check">✓</div><span class="trust-label">Global School Access</span></div>
-    <div class="trust-item"><div class="t-check">✓</div><span class="trust-label">No MCAT Pathways Available</span></div>
+    <div class="trust-item"><div style="display:inline-flex;align-items:center;gap:.45rem;background:#C9A84C;color:#0B1929;font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .85rem;border-radius:50px;animation:flashColors 2.8s ease-in-out infinite;white-space:nowrap;">🚫 No NEET/MCAT Required ✅</div></div>
     <div class="trust-item"><div class="t-check">✓</div><span class="trust-label">One-on-One Support</span></div>
   </div>
 </div>

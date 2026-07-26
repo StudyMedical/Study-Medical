@@ -13,7 +13,7 @@
 }
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
 body{font-family:"Inter",sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;}
-img{max-width:100%;height:auto;display:block;}
+img{max-width:100%;height:auto;display:block;}.hero-slide img,.slide img{height:100%;max-width:none;}
 a{color:inherit;}
 
 /* ── NAV (mobile first) ── */
@@ -105,11 +105,11 @@ footer{background:#060e18;border-top:1px solid rgba(201,168,76,.12);padding:2.5r
 .cta-band p{font-size:.87rem;color:rgba(255,255,255,.5);margin-bottom:1.4rem;line-height:1.6;}
 
 /* ── SLIDESHOW ── */
-.slide-wrap{position:relative;overflow:hidden;margin-top:66px;}
-.slides{position:absolute;inset:0;}
+.slide-wrap{position:relative;overflow:hidden;margin-top:66px;min-height:52vh;}
+.slides{position:absolute;inset:0;z-index:0;}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease-in-out;}
 .slide.s-active{opacity:1;}
-.slide img{width:100%;height:100%;object-fit:cover;animation:kb 12s ease-in-out forwards;}
+.slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 12s ease-in-out forwards;}
 @keyframes kb{0%{transform:scale(1);}100%{transform:scale(1.1);}}
 .slide::after{content:"";position:absolute;inset:0;
   background:linear-gradient(to bottom,rgba(11,25,41,.52) 0%,rgba(11,25,41,.68) 55%,rgba(11,25,41,.96) 100%);}
@@ -373,7 +373,7 @@ footer{background:#060e18;border-top:1px solid rgba(201,168,76,.12);padding:2.5r
   <a class="mob-cta" href="contact.html" onclick="closeMenu()">Book Free Consultation</a>
 </div>
 <div class="mob-overlay" id="mobOverlay" onclick="closeMenu()"></div>
-<div class="slide-wrap" style="min-height:50vh;">
+<div class="slide-wrap">
   <div class="slides" id="lphWrap"><div class="slide  s-active" id="lph0"><img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1600&q=80" alt="Your Score Is Not the End" loading="eager"></div><div class="slide" id="lph1"><img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1600&q=80" alt="Alternative Pathways" loading="lazy"></div><div class="slide" id="lph2"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=1600&q=80" alt="Future Physicians" loading="lazy"></div></div></div>
   <div class="sgrid"></div>
   <div class="slide-content">
